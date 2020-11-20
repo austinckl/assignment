@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-message-bus-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-message-bus
+  template:
+    metadata:
+      labels:
+        app: redis-message-bus
+    spec:
+      containers:
+        - name: redis-message-bus
+          image: redis
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-message-bus-srv
+spec:
+  selector:
+    app: redis-message-bus
+  ports:
+    - name: db
+      protocol: TCP
+      port: 6379
+      targetPort: 6379
